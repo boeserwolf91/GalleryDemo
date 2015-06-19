@@ -1,0 +1,19 @@
+<resources>
+
+    <color name="colorPrimary">#0099CC</color>
+    <color name="colorPrimaryDark">#0063cc</color>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="actionModeBackground">@color/colorPrimary</item>
+    </style>
+    
+    <color name="activity_gallery_photo_album_name_background">#63000000</color>
+    <color name="activity_gallery_photo_album_name_background_activated">#630099CC</color>
+
+    <color name="activity_gallery_item_background">#ff525252</color>
+    <color name="activity_gallery_item_background_activated">#0099CC</color>
+    <color name="activity_gallery_item_tint_activated">#7c0099cc</color>
+</resources>
