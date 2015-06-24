@@ -1,13 +1,17 @@
 package me.swolf.android.gallery;
 
+import java.util.Locale;
+
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 
 import me.swolf.android.gallery.api.Gallery;
@@ -20,6 +24,9 @@ public class PhotoPreviewActivity extends Activity
 {
     public static String PHOTO_ALBUM_ID = "PHOTO_ALBUM_ID";
     public static String PHOTO_ID = "PHOTO_ID";
+
+    private final int maxHeight = 2048;
+    private final int maxWidth = 2048;
 
     private Photo photo;
     private TouchImageView touchImageView;
@@ -46,7 +53,8 @@ public class PhotoPreviewActivity extends Activity
             PhotoAlbum album = gallery.getPhotoAlbum(extras.getInt(PHOTO_ALBUM_ID));
             this.photo = album.getPhoto(extras.getInt(PHOTO_ID));
 
-            this.touchImageView.setImageBitmap(this.photo.loadThumbnailBitmap(this));
+            Bitmap bitmap = this.modifyBitmap(this.photo.loadThumbnailBitmap(this), this.maxWidth, this.maxHeight, this.photo.getOrientation());
+            this.touchImageView.setImageBitmap(bitmap);
 
             this.task = new BitmapLoaderTask();
             this.task.execute();
@@ -75,12 +83,64 @@ public class PhotoPreviewActivity extends Activity
         this.recycleBitmap();
     }
 
+    public Bitmap modifyBitmap(Bitmap source, int maxWidth, int maxHeight, int orientation)
+    {
+        boolean modifyBitmap = false;
+
+        final int oldWidth = source.getWidth();
+        final int oldHeight = source.getHeight();
+        float newWidth = oldWidth;
+        float newHeight = oldHeight;
+
+        if (orientation != 0)
+        {
+            modifyBitmap = true;
+        }
+        if (newWidth > maxWidth)
+        {
+            newHeight *= maxWidth / newWidth;
+            newWidth = maxWidth;
+            modifyBitmap = true;
+        }
+        if (newHeight > maxHeight)
+        {
+            newWidth *= maxHeight / newHeight;
+            newHeight = maxHeight;
+            modifyBitmap = true;
+        }
+
+        if (!modifyBitmap)
+        {
+            return source;
+        }
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(newWidth / oldWidth, newHeight / oldHeight);
+        matrix.postRotate(orientation);
+
+        Bitmap modified = Bitmap.createBitmap(source, 0, 0, oldWidth, oldHeight, matrix, true);
+        source.recycle();
+
+        Log.i(this.getClass().getSimpleName(), String.format(Locale.US, "modified bitmap; scaled from %dx%d to %dx%d; rotated %d degree", oldWidth,
+                                                             oldHeight, modified.getWidth(), modified.getHeight(), orientation));
+
+        return modified;
+    }
+
     private class BitmapLoaderTask extends AsyncTask<Void, Void, Void>
     {
         @Override
         protected Void doInBackground(Void... params)
         {
-            final Bitmap bitmap = photo.loadBitmap(PhotoPreviewActivity.this);
+            Bitmap source = photo.loadBitmap(PhotoPreviewActivity.this);
+            if (source == null)
+            {
+                Log.e(this.getClass().getSimpleName(), "The bitmap couldn't be loaded");
+                return null;
+            }
+            Log.d(this.getClass().getSimpleName(), "bitmap was loaded");
+
+            final Bitmap bitmap = modifyBitmap(source, maxWidth, maxHeight, photo.getOrientation());
 
             runOnUiThread(new Runnable()
             {
