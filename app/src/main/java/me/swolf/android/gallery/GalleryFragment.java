@@ -6,9 +6,9 @@ import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -31,23 +31,20 @@ public abstract class GalleryFragment extends Fragment
         this.view = (RecyclerView)inflater.inflate(R.layout.activity_gallery_fragments, container, false);
         this.view.setItemAnimator(new DefaultItemAnimator());
         this.view.setAdapter(createAdapter());
+        this.view.setLayoutManager(new GridLayoutManager(this.activity, this.getColumnCount()));
 
         // calculates how many view holders should be created maximum
         Point screenSize = Misc.getScreenSize(this.activity.getWindowManager()); // loads the screen size
-        int columnCount = this.getResources().getInteger(R.integer.gallery_column_count);
-        int width = screenSize.x / columnCount + 1; // calculates the maximum width of a single view holder
+        int completeColumnCount = this.getResources().getInteger(R.integer.gallery_column_count);
+        int width = screenSize.x / completeColumnCount + 1; // calculates the maximum width of a single view holder
         int rowCount = screenSize.y / width + 1; // calculates how many view holders can be displayed in one row; assumes height and width are equal
-        int maxViewHoldersCount = (rowCount + 2) * columnCount; // calculates the maximum view holders of the screen and one pre-loading row
+        int maxViewHoldersCount = (rowCount + 2) * completeColumnCount; // calculates the maximum view holders of the screen and one pre-loading row
 
         if (BuildConfig.DEBUG)
         {
             Log.d(this.getClass().getSimpleName(), "sets maximum view holders size to " + maxViewHoldersCount);
         }
         this.view.getRecycledViewPool().setMaxRecycledViews(this.view.getAdapter().getItemViewType(0), maxViewHoldersCount);
-
-        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(this.getColumnCount(), StaggeredGridLayoutManager.VERTICAL);
-        manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-        this.view.setLayoutManager(manager);
 
         if (savedInstanceState != null)
         {

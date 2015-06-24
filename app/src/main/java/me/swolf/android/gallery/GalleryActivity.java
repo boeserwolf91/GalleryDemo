@@ -19,13 +19,12 @@ import android.media.MediaScannerConnection.OnScanCompletedListener;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.view.ActionMode.Callback;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView.LayoutManager;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -247,9 +246,9 @@ public class GalleryActivity extends AppCompatActivity implements OnUpdateFinish
         this.galleryAlbumPhotoFragment = null;
 
         LayoutManager layoutManager = galleryAlbumFragment.getRecyclerView().getLayoutManager();
-        if (layoutManager instanceof StaggeredGridLayoutManager && ((StaggeredGridLayoutManager)layoutManager).getSpanCount() != this.columnCount)
+        if (layoutManager instanceof GridLayoutManager && ((GridLayoutManager)layoutManager).getSpanCount() != this.columnCount)
         {
-            ((StaggeredGridLayoutManager)layoutManager).setSpanCount(columnCount);
+            ((GridLayoutManager)layoutManager).setSpanCount(columnCount);
         }
 
         // TODO try it without
@@ -276,9 +275,9 @@ public class GalleryActivity extends AppCompatActivity implements OnUpdateFinish
         this.getSupportFragmentManager().beginTransaction().replace(R.id.album_photo_container, fragment).commit();
 
         LayoutManager layoutManager = galleryAlbumFragment.getRecyclerView().getLayoutManager();
-        if (layoutManager instanceof StaggeredGridLayoutManager && ((StaggeredGridLayoutManager)layoutManager).getSpanCount() > 1)
+        if (layoutManager instanceof GridLayoutManager && ((GridLayoutManager)layoutManager).getSpanCount() > 1)
         {
-            ((StaggeredGridLayoutManager)layoutManager).setSpanCount(1);
+            ((GridLayoutManager)layoutManager).setSpanCount(1);
         }
         this.setTitle(album.getName());
     }
