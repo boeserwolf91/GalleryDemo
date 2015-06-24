@@ -11,7 +11,7 @@
     <ImageView
         android:contentDescription="Photo Pool Photo Item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
         android:scaleType="centerCrop"
         android:id="@+id/thumbnail"/>
 
