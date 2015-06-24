@@ -78,13 +78,9 @@ public class GalleryAlbumFragment extends GalleryFragment
             this.albums = activity.getGallery().getPhotoAlbums();
         }
 
-        int i = 0;
-
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
         {
-            i++;
-            System.out.println(i + " album view holders");
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_gallery_photo_album_item, parent, false);
             return new ViewHolder(this.activity, v);
         }

@@ -33,7 +33,6 @@ public class PhotoBitmapLoaderTask
         {
             this.task = new RealLoadingTask();
             this.task.execute();
-            Log.d(this.getClass().getSimpleName(), "a new task was created");
         }
     }
 
@@ -42,7 +41,7 @@ public class PhotoBitmapLoaderTask
         @Override
         protected Void doInBackground(Void... params)
         {
-            int i = 0;
+            int loadedBitmapCount = 0;
             while (!entries.isEmpty())
             {
                 QueueEntry entry = entries.poll();
@@ -51,7 +50,7 @@ public class PhotoBitmapLoaderTask
                 {
                     continue;
                 }
-                i++;
+                loadedBitmapCount++;
 
                 Bitmap bitmap = entry.photo.loadThumbnailBitmap(context);
 
@@ -60,7 +59,10 @@ public class PhotoBitmapLoaderTask
                     entry.viewHolder.setPhotoBitmap(entry.photo, bitmap);
                 }
             }
-            Log.d(this.getClass().getSimpleName(), i + " photos were loaded with this task");
+            if (BuildConfig.DEBUG)
+            {
+                Log.d(this.getClass().getSimpleName(), loadedBitmapCount + " photos were loaded with this task");
+            }
             return null;
         }
     }
