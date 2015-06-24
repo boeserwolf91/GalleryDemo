@@ -2,6 +2,8 @@ package me.swolf.android.gallery;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import me.swolf.android.gallery.GalleryAlbumPhotoFragment.AlbumPhotoAdapter.ViewHolder;
 import me.swolf.android.gallery.api.Photo;
@@ -142,8 +143,13 @@ public class GalleryAlbumPhotoFragment extends GalleryFragment
                         }
                         else
                         {
-                            Toast.makeText(activity, "I'm going to show it later", Toast.LENGTH_SHORT).show();
-                            // TODO open an activity showing the photo
+                            Context context = v.getContext();
+
+                            Intent intent = new Intent(context, PhotoPreviewActivity.class);
+                            intent.putExtra(PhotoPreviewActivity.PHOTO_ALBUM_ID, boundAlbum.getId());
+                            intent.putExtra(PhotoPreviewActivity.PHOTO_ID, boundPhoto.getId());
+
+                            context.startActivity(intent);
                         }
                     }
                 });

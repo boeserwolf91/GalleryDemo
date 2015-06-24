@@ -40,6 +40,19 @@ public class SimplePhotoAlbum implements PhotoAlbum
     }
 
     @Override
+    public Photo getPhoto(int id)
+    {
+        for (Photo photo : photos)
+        {
+            if (photo.getId() == id)
+            {
+                return photo;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public Photo[] getPhotos()
     {
         return this.photos.toArray(new Photo[this.photos.size()]);
