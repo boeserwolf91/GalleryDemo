@@ -82,6 +82,15 @@ public abstract class GalleryFragment extends Fragment
         this.activity = null;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        PhotoViewHolder holder = (PhotoViewHolder)this.view.getChildViewHolder(this.view.getChildAt(0));
+        outState.putInt(SAVED_POSITION_STATE, holder.boundPosition);
+    }
+
     /**
      * Method is invoked if the selection mode was finished
      */
