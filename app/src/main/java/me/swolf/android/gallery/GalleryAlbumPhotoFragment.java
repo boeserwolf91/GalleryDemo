@@ -3,6 +3,7 @@ package me.swolf.android.gallery;
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
@@ -28,6 +29,18 @@ public class GalleryAlbumPhotoFragment extends GalleryFragment
         this.activity.attachAlbumPhotoFragment(this);
     }
 
+    @Nullable
+    @Override
+    public RecyclerView onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        Bundle arguments = this.getArguments();
+        this.album = this.activity.getGallery().getPhotoAlbum(arguments.getInt(PHOTO_ALBUM_PARAM));
+
+        this.activity.setTitle(this.album.getName());
+
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     @Override
     protected int getColumnCount()
     {
@@ -37,9 +50,6 @@ public class GalleryAlbumPhotoFragment extends GalleryFragment
     @Override
     protected Adapter createAdapter()
     {
-        Bundle arguments = this.getArguments();
-        this.album = this.activity.getGallery().getPhotoAlbum(arguments.getInt(PHOTO_ALBUM_PARAM));
-
         return new AlbumPhotoAdapter(this.activity, this.album);
     }
 
