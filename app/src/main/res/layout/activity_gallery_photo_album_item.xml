@@ -9,7 +9,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:contentDescription="Photo Pool Photo Item"
+        android:contentDescription="@string/gallery_photo_item_imageView_contentDescription"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:scaleType="centerCrop"

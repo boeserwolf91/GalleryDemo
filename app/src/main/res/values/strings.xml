@@ -7,6 +7,7 @@
     <string name="taken_photo_directory_name">GalleryDemo</string>
 
     <string name="gallery_selection_mode">Selection Mode</string>
+    <string name="gallery_photo_item_imageView_contentDescription">photo pool photo item</string>
     <plurals name="gallery_selection_mode_photos">
         <item quantity="one">%d photo was selected</item>
         <item quantity="other">%d photos were selected</item>

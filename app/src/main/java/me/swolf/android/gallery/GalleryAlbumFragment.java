@@ -1,5 +1,7 @@
 package me.swolf.android.gallery;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -124,7 +126,7 @@ public class GalleryAlbumFragment extends GalleryFragment
             {
                 super.bind(album, photo, position);
 
-                String text = String.format("%s (%d)", album.getName(), album.getPhotos().length);
+                String text = String.format(Locale.getDefault(), "%s (%d)", album.getName(), album.getPhotos().length);
 
 // TODO just show the album name in one line and at the end the number of photos in the album; The following code doesn't work correctly unfortunately
 //                float width = this.nameView.getWidth();
