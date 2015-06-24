@@ -19,6 +19,7 @@ import android.media.MediaScannerConnection.OnScanCompletedListener;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
@@ -242,6 +243,7 @@ public class GalleryActivity extends AppCompatActivity implements OnUpdateFinish
         FrameLayout layout = (FrameLayout)this.findViewById(R.id.album_photo_container);
         layout.setVisibility(View.GONE);
 
+        this.getSupportFragmentManager().beginTransaction().remove(this.galleryAlbumPhotoFragment).commit();
         this.galleryAlbumPhotoFragment = null;
 
         LayoutManager layoutManager = galleryAlbumFragment.getRecyclerView().getLayoutManager();
