@@ -4,15 +4,21 @@ import java.util.Locale;
 
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
+import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 
 import me.swolf.android.gallery.api.Gallery;
 import me.swolf.android.gallery.api.Photo;
@@ -20,7 +26,7 @@ import me.swolf.android.gallery.api.PhotoAlbum;
 import me.swolf.android.gallery.api.PhotoApplication;
 import me.swolf.android.gallery.util.TouchImageView;
 
-public class PhotoPreviewActivity extends Activity
+public class PhotoPreviewActivity extends AppCompatActivity
 {
     public static String PHOTO_ALBUM_ID = "PHOTO_ALBUM_ID";
     public static String PHOTO_ID = "PHOTO_ID";
@@ -46,18 +52,53 @@ public class PhotoPreviewActivity extends Activity
         this.setContentView(this.touchImageView);
 
         Bundle extras = this.getIntent().getExtras();
-        if (extras != null)
+        if (extras == null)
         {
-            PhotoApplication photoApplication = (PhotoApplication)this.getApplication();
-            Gallery gallery = photoApplication.getGallery();
-            PhotoAlbum album = gallery.getPhotoAlbum(extras.getInt(PHOTO_ALBUM_ID));
-            this.photo = album.getPhoto(extras.getInt(PHOTO_ID));
+            return;
+        }
 
-            Bitmap bitmap = this.modifyBitmap(this.photo.loadThumbnailBitmap(this), this.maxWidth, this.maxHeight, this.photo.getOrientation());
-            this.touchImageView.setImageBitmap(bitmap);
+        PhotoApplication photoApplication = (PhotoApplication)this.getApplication();
+        Gallery gallery = photoApplication.getGallery();
+        PhotoAlbum album = gallery.getPhotoAlbum(extras.getInt(PHOTO_ALBUM_ID));
+        this.photo = album.getPhoto(extras.getInt(PHOTO_ID));
 
-            this.task = new BitmapLoaderTask();
-            this.task.execute();
+        Bitmap bitmap = this.modifyBitmap(this.photo.loadThumbnailBitmap(this), this.maxWidth, this.maxHeight, this.photo.getOrientation());
+        this.touchImageView.setImageBitmap(bitmap);
+
+        this.task = new BitmapLoaderTask();
+        this.task.execute();
+
+        // hide the status bar.
+        this.hideStatusBar();
+        touchImageView.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                hideStatusBar();
+            }
+        });
+
+        // hide action bar if available
+        ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null)
+        {
+            actionBar.hide();
+        }
+    }
+
+    private void hideStatusBar()
+    {
+        if (Build.VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN)
+        {
+            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+        else
+        {
+            View decorView = this.getWindow().getDecorView();
+
+            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
         }
     }
 
