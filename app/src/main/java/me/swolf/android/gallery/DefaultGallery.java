@@ -23,7 +23,7 @@ import me.swolf.android.gallery.util.ProgressDrivenAsyncTask;
 public class DefaultGallery implements Gallery
 {
     private long updateTimestamp = 0;
-    private SparseArray<SimplePhotoAlbum> photoAlbumSparseArray;
+    private final SparseArray<SimplePhotoAlbum> photoAlbumSparseArray;
 
     private LoadInternalPhotosTask runningTask;
 

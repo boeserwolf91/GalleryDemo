@@ -29,8 +29,8 @@ import me.swolf.android.gallery.util.TouchImageView;
 
 public class PhotoPreviewActivity extends AppCompatActivity
 {
-    public static String PHOTO_ALBUM_ID = "PHOTO_ALBUM_ID";
-    public static String PHOTO_ID = "PHOTO_ID";
+    public static final String PHOTO_ALBUM_ID = "PHOTO_ALBUM_ID";
+    public static final String PHOTO_ID = "PHOTO_ID";
 
     private final int maxHeight = 2048;
     private final int maxWidth = 2048;
@@ -105,7 +105,7 @@ public class PhotoPreviewActivity extends AppCompatActivity
         }
     }
 
-    public void recycleBitmap()
+    private void recycleBitmap()
     {
         Drawable drawable = this.touchImageView.getDrawable();
         if (!(drawable instanceof BitmapDrawable))
@@ -127,7 +127,7 @@ public class PhotoPreviewActivity extends AppCompatActivity
         this.recycleBitmap();
     }
 
-    public Bitmap modifyBitmap(Bitmap source, int maxWidth, int maxHeight, int orientation)
+    private Bitmap modifyBitmap(Bitmap source, int maxWidth, int maxHeight, int orientation)
     {
         boolean modifyBitmap = false;
 

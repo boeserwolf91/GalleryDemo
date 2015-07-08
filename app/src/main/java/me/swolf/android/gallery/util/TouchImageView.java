@@ -28,6 +28,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -41,7 +42,6 @@ import android.widget.Scroller;
 
 public class TouchImageView extends ImageView
 {
-
     private static final String DEBUG = "DEBUG";
 
     //
@@ -74,7 +74,6 @@ public class TouchImageView extends ImageView
         ANIMATE_ZOOM
     }
 
-    ;
     private State state;
 
     private float minScale;
@@ -315,7 +314,7 @@ public class TouchImageView extends ImageView
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
+    protected void onDraw(@NonNull Canvas canvas)
     {
         onDrawReady = true;
         imageRenderedAtLeastOnce = true;
@@ -909,17 +908,13 @@ public class TouchImageView extends ImageView
         @Override
         public boolean onDoubleTapEvent(MotionEvent e)
         {
-            if (doubleTapListener != null)
-            {
-                return doubleTapListener.onDoubleTapEvent(e);
-            }
-            return false;
+            return doubleTapListener != null && doubleTapListener.onDoubleTapEvent(e);
         }
     }
 
     public interface OnTouchImageViewListener
     {
-        public void onMove();
+        void onMove();
     }
 
     /**
@@ -1297,7 +1292,7 @@ public class TouchImageView extends ImageView
                 minY = maxY = startY;
             }
 
-            scroller.fling(startX, startY, (int)velocityX, (int)velocityY, minX, maxX, minY, maxY);
+            scroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
             currX = startX;
             currY = startY;
         }

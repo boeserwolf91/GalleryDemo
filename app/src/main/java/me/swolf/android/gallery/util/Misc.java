@@ -29,6 +29,7 @@ public final class Misc
         Display display = windowManager.getDefaultDisplay();
         if (VERSION.SDK_INT < VERSION_CODES.HONEYCOMB_MR2)
         {
+            //noinspection deprecation
             size.set(display.getWidth(), display.getHeight());
         }
         else

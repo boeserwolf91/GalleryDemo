@@ -40,6 +40,7 @@ abstract class PhotoViewHolder extends ViewHolder
             {
                 if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN)
                 {
+                    //noinspection deprecation
                     thumbnailView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
                 else

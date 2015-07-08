@@ -66,7 +66,7 @@ public class GalleryAlbumPhotoFragment extends GalleryFragment
         this.onPhotoEvent(album, photo, false);
     }
 
-    public void onPhotoEvent(PhotoAlbum album, Photo photo, boolean selected)
+    private void onPhotoEvent(PhotoAlbum album, Photo photo, boolean selected)
     {
         if (!album.equals(this.album))
         {

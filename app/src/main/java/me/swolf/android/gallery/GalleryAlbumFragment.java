@@ -48,7 +48,7 @@ public class GalleryAlbumFragment extends GalleryFragment
         this.setSelectedPhotoCount(album);
     }
 
-    public void setSelectedPhotoCount(PhotoAlbum album)
+    private void setSelectedPhotoCount(PhotoAlbum album)
     {
         for (int i = 0; i < this.view.getChildCount(); i++)
         {
