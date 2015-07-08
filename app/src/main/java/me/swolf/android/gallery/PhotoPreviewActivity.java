@@ -7,6 +7,7 @@ import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -87,6 +88,8 @@ public class PhotoPreviewActivity extends AppCompatActivity
         }
     }
 
+    // suppress lint warning because the field View.SYSTEM_UI_FLAG_FULLSCREEN isn't used on older devices
+    @SuppressLint("InlinedApi")
     private void hideStatusBar()
     {
         if (Build.VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN)
